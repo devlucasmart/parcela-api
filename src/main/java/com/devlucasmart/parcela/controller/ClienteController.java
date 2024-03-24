@@ -1,27 +1,56 @@
 package com.devlucasmart.parcela.controller;
 
-import com.devlucasmart.parcela.model.ClienteModel;
+import com.devlucasmart.parcela.dto.ClienteRequest;
+import com.devlucasmart.parcela.dto.ClienteResponse;
+import com.devlucasmart.parcela.service.ClienteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("clientes")
 public class ClienteController {
+   private final ClienteService service;
 
     @GetMapping
-    public List<ClienteModel> findAll() {
-        var cliente1 =ClienteModel
-                .builder()
-                .id(1L)
-                .nome("Lucas Martins")
-                .email("lucas.martins@gmail.com")
-                .telefone("4343443434")
-                .build();
-        return Arrays.asList(cliente1);
+    public List<ClienteResponse> findAll() {
+        return service.findAll();
+    }
+
+    @GetMapping("nome")
+    public List<ClienteResponse> findByNome(@RequestBody ClienteRequest request) {
+        return service.findByNome(request);
+    }
+
+    @GetMapping("{clienteId}")
+    public ClienteResponse findById(@PathVariable Long clienteId) {
+       return service.findById(clienteId);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public ClienteResponse save(@RequestBody ClienteRequest request) {
+        return service.save(request);
+    }
+
+    @PutMapping("{clienteId}")
+    public ClienteResponse update(@PathVariable Long clienteId, @RequestBody ClienteRequest request) {
+       return service.update(clienteId, request);
+    }
+
+    @DeleteMapping("{clienteId}")
+    public void delete(@PathVariable Long clienteId) {
+        service.delete(clienteId);
     }
 }
