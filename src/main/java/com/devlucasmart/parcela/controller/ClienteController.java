@@ -3,6 +3,7 @@ package com.devlucasmart.parcela.controller;
 import com.devlucasmart.parcela.dto.ClienteRequest;
 import com.devlucasmart.parcela.dto.ClienteResponse;
 import com.devlucasmart.parcela.service.ClienteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +30,7 @@ public class ClienteController {
     }
 
     @GetMapping("nome")
-    public List<ClienteResponse> findByNome(@RequestBody ClienteRequest request) {
+    public List<ClienteResponse> findByNome(@Valid @RequestBody ClienteRequest request) {
         return service.findByNome(request);
     }
 
@@ -40,12 +41,12 @@ public class ClienteController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ClienteResponse save(@RequestBody ClienteRequest request) {
+    public ClienteResponse save(@Valid @RequestBody ClienteRequest request) {
         return service.save(request);
     }
 
     @PutMapping("{clienteId}")
-    public ClienteResponse update(@PathVariable Long clienteId, @RequestBody ClienteRequest request) {
+    public ClienteResponse update(@Valid @PathVariable Long clienteId, @RequestBody ClienteRequest request) {
        return service.update(clienteId, request);
     }
 
